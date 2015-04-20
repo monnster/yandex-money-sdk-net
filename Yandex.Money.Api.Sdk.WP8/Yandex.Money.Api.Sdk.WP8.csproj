@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{876BC9DA-295F-47BB-8BE2-2935310A7DA5}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yandex.Money.Api.Sdk</RootNamespace>
+    <AssemblyName>Yandex.Money.Api.Sdk</AssemblyName>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SupportedCultures />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Debug\Yandex.Money.Api.Sdk.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Release\Yandex.Money.Api.Sdk.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Authorization\AuthorizationRequestParams.cs">
+      <Link>Authorization\AuthorizationRequestParams.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Authorization\Scopes.cs">
+      <Link>Authorization\Scopes.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Exceptions\InsufficientScopeException.cs">
+      <Link>Exceptions\InsufficientScopeException.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Exceptions\InvalidRequestException.cs">
+      <Link>Exceptions\InvalidRequestException.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Exceptions\InvalidTokenException.cs">
+      <Link>Exceptions\InvalidTokenException.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IAuthenticator.cs">
+      <Link>Interfaces\IAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IDeserializer.cs">
+      <Link>Interfaces\IDeserializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IGenericSerializer.cs">
+      <Link>Interfaces\IGenericSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IHostProvider.cs">
+      <Link>Interfaces\IHostProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IHttpClient.cs">
+      <Link>Interfaces\IHttpClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IOperation.cs">
+      <Link>Interfaces\IOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IParams.cs">
+      <Link>Interfaces\IParams.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\IRequest.cs">
+      <Link>Interfaces\IRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Interfaces\ISerializer.cs">
+      <Link>Interfaces\ISerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Net\DefaultAuthenticator.cs">
+      <Link>Net\DefaultAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Net\DefaultHostsProvider.cs">
+      <Link>Net\DefaultHostsProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Net\DefaultHttpPostClient.cs">
+      <Link>Net\DefaultHttpPostClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Net\DefaultMobileHostsProvider.cs">
+      <Link>Net\DefaultMobileHostsProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\AccountInfoRequest.cs">
+      <Link>Requests\AccountInfoRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\Base\JsonRequest.cs">
+      <Link>Requests\Base\JsonRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\Base\Request.cs">
+      <Link>Requests\Base\Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\Base\SimpleRequest.cs">
+      <Link>Requests\Base\SimpleRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\IncomingTransferAcceptRequest.cs">
+      <Link>Requests\IncomingTransferAcceptRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\IncomingTransferRejectRequest.cs">
+      <Link>Requests\IncomingTransferRejectRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\InstanceIdRequest.cs">
+      <Link>Requests\InstanceIdRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\OperationDetailsRequest.cs">
+      <Link>Requests\OperationDetailsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\OperationHistoryRequest.cs">
+      <Link>Requests\OperationHistoryRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\ProcessExternalPaymentRequest.cs">
+      <Link>Requests\ProcessExternalPaymentRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\ProcessPaymentRequest.cs">
+      <Link>Requests\ProcessPaymentRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\RequestExternalPaymentRequest.cs">
+      <Link>Requests\RequestExternalPaymentRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\RequestPaymentRequest.cs">
+      <Link>Requests\RequestPaymentRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\TokenAuxRequest.cs">
+      <Link>Requests\TokenAuxRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\TokenRequest.cs">
+      <Link>Requests\TokenRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\AccountInfoResult.cs">
+      <Link>Responses\AccountInfoResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\Base\ApiResultBase.cs">
+      <Link>Responses\Base\ApiResultBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\DigitalGoods.cs">
+      <Link>Responses\DigitalGoods.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\IncomingTransferResult.cs">
+      <Link>Responses\IncomingTransferResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\InstanceIdResult.cs">
+      <Link>Responses\InstanceIdResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\MoneyFlow.cs">
+      <Link>Responses\MoneyFlow.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\OperationDetailsResult.cs">
+      <Link>Responses\OperationDetailsResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\OperationHistoryResult.cs">
+      <Link>Responses\OperationHistoryResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\OperationType.cs">
+      <Link>Responses\OperationType.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\ProcessPaymentResult.cs">
+      <Link>Responses\ProcessPaymentResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\RequestPaymentResult.cs">
+      <Link>Responses\RequestPaymentResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\ResponseStatus.cs">
+      <Link>Responses\ResponseStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\TokenAuxResult.cs">
+      <Link>Responses\TokenAuxResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\TokenResult.cs">
+      <Link>Responses\TokenResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Utils\DateTimeEx.cs">
+      <Link>Utils\DateTimeEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Utils\DefaultJsonSerializer.cs">
+      <Link>Utils\DefaultJsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Utils\Misc.cs">
+      <Link>Utils\Misc.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Utils\ParamNameAttribute.cs">
+      <Link>Utils\ParamNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Utils\RequestParams.cs">
+      <Link>Utils\RequestParams.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <ProjectExtensions />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

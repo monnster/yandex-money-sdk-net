@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{933A0E2F-1FF8-4F03-8392-DFC4E21F8D23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yandex.Money.Api.Sdk</RootNamespace>
+    <AssemblyName>Yandex.Money.Api.Sdk</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Yandex.Money.Api.Sdk.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Yandex.Money.Api.Sdk.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authorization\AuthorizationRequestParams.cs" />
+    <Compile Include="Authorization\Scopes.cs" />
+    <Compile Include="Exceptions\InsufficientScopeException.cs" />
+    <Compile Include="Exceptions\InvalidRequestException.cs" />
+    <Compile Include="Exceptions\InvalidTokenException.cs" />
+    <Compile Include="Interfaces\IAuthenticator.cs" />
+    <Compile Include="Interfaces\IDeserializer.cs" />
+    <Compile Include="Interfaces\IGenericSerializer.cs" />
+    <Compile Include="Interfaces\IHostProvider.cs" />
+    <Compile Include="Interfaces\IHttpClient.cs" />
+    <Compile Include="Interfaces\IOperation.cs" />
+    <Compile Include="Interfaces\IParams.cs" />
+    <Compile Include="Interfaces\IRequest.cs" />
+    <Compile Include="Interfaces\ISerializer.cs" />
+    <Compile Include="Net\DefaultAuthenticator.cs" />
+    <Compile Include="Net\DefaultHostsProvider.cs" />
+    <Compile Include="Net\DefaultMobileHostsProvider.cs" />
+    <Compile Include="Net\DefaultHttpPostClient.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\AccountInfoRequest.cs" />
+    <Compile Include="Requests\Base\JsonRequest.cs" />
+    <Compile Include="Requests\Base\Request.cs" />
+    <Compile Include="Requests\Base\SimpleRequest.cs" />
+    <Compile Include="Requests\IncomingTransferAcceptRequest.cs" />
+    <Compile Include="Requests\IncomingTransferRejectRequest.cs" />
+    <Compile Include="Requests\InstanceIdRequest.cs" />
+    <Compile Include="Requests\OperationDetailsRequest.cs" />
+    <Compile Include="Requests\OperationHistoryRequest.cs" />
+    <Compile Include="Requests\ProcessExternalPaymentRequest.cs" />
+    <Compile Include="Requests\ProcessPaymentRequest.cs" />
+    <Compile Include="Requests\RequestExternalPaymentRequest.cs" />
+    <Compile Include="Requests\RequestPaymentRequest.cs" />
+    <Compile Include="Requests\TokenAuxRequest.cs" />
+    <Compile Include="Requests\TokenRequest.cs" />
+    <Compile Include="Responses\AccountInfoResult.cs" />
+    <Compile Include="Responses\Base\ApiResultBase.cs" />
+    <Compile Include="Responses\DigitalGoods.cs" />
+    <Compile Include="Responses\IncomingTransferResult.cs" />
+    <Compile Include="Responses\InstanceIdResult.cs" />
+    <Compile Include="Responses\MoneyFlow.cs" />
+    <Compile Include="Responses\OperationHistoryResult.cs" />
+    <Compile Include="Responses\OperationDetailsResult.cs" />
+    <Compile Include="Responses\OperationType.cs" />
+    <Compile Include="Responses\ProcessPaymentResult.cs" />
+    <Compile Include="Responses\RequestPaymentResult.cs" />
+    <Compile Include="Responses\ResponseStatus.cs" />
+    <Compile Include="Responses\TokenAuxResult.cs" />
+    <Compile Include="Responses\TokenResult.cs" />
+    <Compile Include="Utils\DateTimeEx.cs" />
+    <Compile Include="Utils\DefaultJsonSerializer.cs" />
+    <Compile Include="Utils\Misc.cs" />
+    <Compile Include="Utils\ParamNameAttribute.cs" />
+    <Compile Include="Utils\RequestParams.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
