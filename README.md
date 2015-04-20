@@ -14,7 +14,7 @@
 
 ### Installation
 
-Nuget package LINK_HERE
+[Nuget package](https://www.nuget.org/packages/Yandex.Money.Api.Sdk/)
 
 ### Payments from the Yandex.Money wallet
 
