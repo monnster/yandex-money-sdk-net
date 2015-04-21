@@ -18,13 +18,13 @@ Recommended way to use the library in your own project is install it as [Nuget p
 
 ### App Registration
 
-To be able to use the library you should register your application and get your unique *client id*. To register an application please follow the steps described on [this page][http://api.yandex.com/money/doc/dg/tasks/register-client.xml] (also available in [Russian][http://api.yandex.ru/money/doc/dg/tasks/register-client.xml]).
+To be able to use the library you should register your application and get your unique *client id*. To register an application please follow the steps described on [this page](http://api.yandex.com/money/doc/dg/tasks/register-client.xml) (also available in [Russian](http://api.yandex.ru/money/doc/dg/tasks/register-client.xml)).
 
 ### Payments from the Yandex.Money wallet
 
 To make payments from Yandex.Money wallet you have to:
 
-1. Obtain [OAuth2 authorization][https://tech.yandex.com/money/doc/dg/reference/request-access-token-docpage/] to make payment from user using web browser.
+1. Obtain [OAuth2 authorization](https://tech.yandex.com/money/doc/dg/reference/request-access-token-docpage/) to make payment from user using web browser.
 Note: `clientId`, `redirectUri`, `clientSecret` are constants that you get on app registration.
 
     ```csharp
@@ -61,7 +61,7 @@ The application receives an Authorization Response in the form of an HTTP Redire
     authenticator.Token = token.Token;
     ```
 
-4. Next, you able to [make payments][https://tech.yandex.com/money/doc/dg/reference/process-payments-docpage/], for example transfers to another user:
+4. Next, you able to [make payments](https://tech.yandex.com/money/doc/dg/reference/process-payments-docpage/), for example transfers to another user:
 
     ```csharp
     var p2P = new P2PRequestPaymentParams {
@@ -84,9 +84,9 @@ The application receives an Authorization Response in the form of an HTTP Redire
 
 ### Payments from bank cards without authorization
 
-To make [payments from bank cards][https://tech.yandex.com/money/doc/dg/reference/process-external-payments-docpage/] you have to:
+To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/reference/process-external-payments-docpage/) you have to:
 
-1. [Registering an instance][https://tech.yandex.com/money/doc/dg/reference/instance-id-docpage/] of the application. **`instance_id` must be obtained only once and stored within application.**
+1. [Registering an instance](https://tech.yandex.com/money/doc/dg/reference/instance-id-docpage/) of the application. **`instance_id` must be obtained only once and stored within application.**
 
     ```csharp
     var instanceIdRequest = new InstanceIdRequest < InstanceIdResult > (defaultHttpPostClient, new JsonSerializer < InstanceIdResult > ()) {
@@ -97,7 +97,7 @@ To make [payments from bank cards][https://tech.yandex.com/money/doc/dg/referenc
     InstanceId = instanceIdResult.InstanceId;
     ```
 
-2. [Create payment][https://tech.yandex.com/money/doc/dg/reference/request-external-payment-docpage/]:
+2. [Create payment](https://tech.yandex.com/money/doc/dg/reference/request-external-payment-docpage/):
 
     ```csharp
     var p2P = new P2PRequestPaymentParams {
@@ -113,7 +113,7 @@ To make [payments from bank cards][https://tech.yandex.com/money/doc/dg/referenc
     var requestPaymentResult = await requestExternalPaymentRequest.Perform();
     ```
 
-3. [Confirm payment][https://tech.yandex.com/money/doc/dg/reference/process-external-payment-docpage/]:
+3. [Confirm payment](https://tech.yandex.com/money/doc/dg/reference/process-external-payment-docpage/):
 
     ```csharp
      var processExternalPaymentRequest = new ProcessExternalPaymentRequest < ProcessPaymentResult > (
