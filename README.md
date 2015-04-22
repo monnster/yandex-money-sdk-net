@@ -9,7 +9,6 @@ Yandex.Money API documentation: [English](http://tech.yandex.com/money/), [Russi
 
 The library requires .NET 4.5 or later.
 
-
 ## Getting started
 
 ### Installation
@@ -39,7 +38,7 @@ Note: `clientId`, `redirectUri`, `clientSecret` are constants that you get on ap
     var dmhp = new DefaultMobileHostsProvider();
 
     // navigate user OAuth2 permission page at our side
-    WebBrowser.Navigate(dmhp.AuthorizationdUri, p.PostBytes(), _contentHeader);
+    WebBrowser.Navigate(dmhp.AuthorizationdUri, p.PostBytes(), ...);
     ```
 
 2. The user enters his login and password, reviews the list of requested permissions, and either approves or rejects the authorization request.
@@ -48,7 +47,7 @@ The application receives an Authorization Response in the form of an HTTP Redire
 3. On success, application should immediately exchange temporary `authorization_code` to permanent `access_token`:
 
     ```csharp
-    var tr = new TokenRequest(defaultHttpPostClient, new JsonSerializer())
+    var tr = new TokenRequest<TokenResult>(defaultHttpPostClient, new JsonSerializer<TokenResult>())
     {
         Code = "Temporary token",
         ClientId = "Your Client Id",
@@ -57,8 +56,11 @@ The application receives an Authorization Response in the form of an HTTP Redire
     };
 
     TokenResult token = await tr.Perform();
+    
+    if(token.Status == ResponseStatus.Success) {
+        authenticator.Token = token.Token;
+    }
 
-    authenticator.Token = token.Token;
     ```
 
 4. Next, you able to [make payments](https://tech.yandex.com/money/doc/dg/reference/process-payments-docpage/)([ru](https://tech.yandex.ru/money/doc/dg/reference/process-payments-docpage/)), for example transfers to another user:
@@ -68,18 +70,25 @@ The application receives an Authorization Response in the form of an HTTP Redire
         AmountDue = "Amount to transfer", To = "User login, email or phone"
     };
 
-    var rpr = new RequestPaymentRequest(defaultHttpPostClient, new JsonSerializer()) {
+    var rpr = new RequestPaymentRequest<RequestPaymentResult>(defaultHttpPostClient, new JsonSerializer<RequestPaymentResult>()) {
         PaymentParams = p2P.GetParams()
     };
 
     var requestPaymentResult = await rpr.Perform();
 
-    var ppr = new ProcessPaymentRequest(defaultHttpPostClient, new JsonSerializer()) {
-        RequestId = requestPaymentResult.RequestID,
-        MoneySource = "..."
-    };
+    if(requestPaymentResult.Status == ResponseStatus.Success) {
+        var ppr = new ProcessPaymentRequest<ProcessPaymentResult>(defaultHttpPostClient, new JsonSerializer<ProcessPaymentResult>()) {
+            RequestId = requestPaymentResult.RequestID,
+            MoneySource = "..."
+        };
 
-    var processPaymentResult = await ppr.Perform();
+        var processPaymentResult = await ppr.Perform();
+    
+        if(processPaymentResult.Status == ResponseStatus.Success) {
+            // success
+        }
+    }
+
     ```
 
 ### Payments from bank cards without authorization
@@ -94,7 +103,11 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
     };
 
     var instanceIdResult = await instanceIdRequest.Perform();
-    InstanceId = instanceIdResult.InstanceId;
+
+    if(instanceIdResult.Status == ResponseStatus.Success) {
+        InstanceId = instanceIdResult.InstanceId;
+    }
+
     ```
 
 2. [Create payment](https://tech.yandex.com/money/doc/dg/reference/request-external-payment-docpage/)([ru](https://tech.yandex.ru/money/doc/dg/reference/request-external-payment-docpage/)):
@@ -104,20 +117,24 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
         AmountDue = "Sum to pay", To = "User login", Message = "..."
     };
 
-    var requestExternalPaymentRequest = new RequestExternalPaymentRequest < RequestPaymentResult > (
-            defaultHttpPostClient, new JsonSerializer < RequestPaymentResult > ()) {
+    var requestExternalPaymentRequest = new RequestExternalPaymentRequest<RequestPaymentResult> (
+            defaultHttpPostClient, new JsonSerializer<RequestPaymentResult> ()) {
         PaymentParams = p2P.GetParams(),
         InstanceId = InstanceId
     };
 
     var requestPaymentResult = await requestExternalPaymentRequest.Perform();
+
+    if(requestPaymentResult.Status == ResponseStatus.Success) {
+        // success
+    }
     ```
 
 3. [Confirm payment](https://tech.yandex.com/money/doc/dg/reference/process-external-payment-docpage/)([ru](https://tech.yandex.ru/money/doc/dg/reference/process-external-payment-docpage/)):
 
     ```csharp
-     var processExternalPaymentRequest = new ProcessExternalPaymentRequest < ProcessPaymentResult > (
-            defaultHttpPostClient, new JsonSerializer < ProcessPaymentResult > ()) {
+     var processExternalPaymentRequest = new ProcessExternalPaymentRequest<ProcessPaymentResult> (
+            defaultHttpPostClient, new JsonSerializer<ProcessPaymentResult>()) {
         RequestId = requestPaymentResult.RequestID,
         InstanceId = InstanceId,
         ExtAuthSuccessUri = "...",
@@ -125,4 +142,8 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
      };
 
      var processPaymentResult = await processExternalPaymentRequest.Perform();
+     
+     if(processPaymentResult.Status == ResponseStatus.Success) {
+        // success
+     }
      ```
