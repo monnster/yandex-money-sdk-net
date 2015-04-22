@@ -81,7 +81,6 @@
     <Compile Include="Requests\ProcessPaymentRequest.cs" />
     <Compile Include="Requests\RequestExternalPaymentRequest.cs" />
     <Compile Include="Requests\RequestPaymentRequest.cs" />
-    <Compile Include="Requests\TokenAuxRequest.cs" />
     <Compile Include="Requests\TokenRequest.cs" />
     <Compile Include="Responses\AccountInfoResult.cs" />
     <Compile Include="Responses\Base\ApiResultBase.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="Responses\ProcessPaymentResult.cs" />
     <Compile Include="Responses\RequestPaymentResult.cs" />
     <Compile Include="Responses\ResponseStatus.cs" />
-    <Compile Include="Responses\TokenAuxResult.cs" />
     <Compile Include="Responses\TokenResult.cs" />
     <Compile Include="Utils\DateTimeEx.cs" />
     <Compile Include="Utils\DefaultJsonSerializer.cs" />

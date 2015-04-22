@@ -181,9 +181,6 @@
     <Compile Include="..\Yandex.Money.Api.Sdk\Requests\RequestPaymentRequest.cs">
       <Link>Requests\RequestPaymentRequest.cs</Link>
     </Compile>
-    <Compile Include="..\Yandex.Money.Api.Sdk\Requests\TokenAuxRequest.cs">
-      <Link>Requests\TokenAuxRequest.cs</Link>
-    </Compile>
     <Compile Include="..\Yandex.Money.Api.Sdk\Requests\TokenRequest.cs">
       <Link>Requests\TokenRequest.cs</Link>
     </Compile>
@@ -222,9 +219,6 @@
     </Compile>
     <Compile Include="..\Yandex.Money.Api.Sdk\Responses\ResponseStatus.cs">
       <Link>Responses\ResponseStatus.cs</Link>
-    </Compile>
-    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\TokenAuxResult.cs">
-      <Link>Responses\TokenAuxResult.cs</Link>
     </Compile>
     <Compile Include="..\Yandex.Money.Api.Sdk\Responses\TokenResult.cs">
       <Link>Responses\TokenResult.cs</Link>
