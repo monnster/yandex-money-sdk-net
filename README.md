@@ -19,6 +19,10 @@ Recommended way to use the library in your own project is install it as [Nuget p
 
 To be able to use the library you should register your application and get your unique *client id*. To register an application please follow the steps described on [this page](http://tech.yandex.com/money/doc/dg/tasks/register-client.xml) (also available in [Russian](http://tech.yandex.ru/money/doc/dg/tasks/register-client.xml)).
 
+### Samples
+
+[Samples](https://github.com/yandex-money/yandex-money-sdk-net-sample).
+
 ### Payments from the Yandex.Money wallet
 
 To make payments from Yandex.Money wallet you have to:
@@ -57,9 +61,7 @@ The application receives an Authorization Response in the form of an HTTP Redire
 
     TokenResult token = await tr.Perform();
     
-    if(token.Status == ResponseStatus.Success) {
-        authenticator.Token = token.Token;
-    }
+    authenticator.Token = token.Token;
 
     ```
 
