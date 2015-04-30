@@ -5,6 +5,8 @@
 The library allows you to make payments from bank cards and Yandex.Money wallets using Yandex.Money API.
 Yandex.Money API documentation: [English](http://tech.yandex.com/money/), [Russian](http://tech.yandex.ru/money/).
 
+See some samples [here](https://github.com/yandex-money/yandex-money-sdk-net-sample).
+
 ## Requirements
 
 The library requires .NET 4.5 or later.
