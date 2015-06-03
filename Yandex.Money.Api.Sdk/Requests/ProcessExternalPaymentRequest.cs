@@ -47,5 +47,13 @@ namespace Yandex.Money.Api.Sdk.Requests
             if (!String.IsNullOrEmpty(MoneySourceToken))
                 uiParams.Add("money_source_token", MoneySourceToken);
         }
+
+        /// <summary>
+        /// IRequest interface implementation
+        /// </summary>
+        public override string RelativeUri
+        {
+            get { return @"/api/process-external-payment"; }
+        }
     }
 }

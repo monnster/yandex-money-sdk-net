@@ -150,4 +150,10 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
      if(processPaymentResult.Status == ResponseStatus.Success) {
         // success
      }
+
+     if(processPaymentResult.Status == ResponseStatus.ExtAuthRequired) {
+
+	WebBrowser.Navigate(processPaymentResult.AcsUri, processPaymentResult.AcsParams);
+     }
+
      ```
