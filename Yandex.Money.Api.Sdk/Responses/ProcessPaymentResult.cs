@@ -25,7 +25,7 @@ namespace Yandex.Money.Api.Sdk.Responses
         public double Balance { get; set; }
 
         /// <summary>
-        /// 	The merchant's transaction number in Yandex.Money
+        /// The merchant's transaction number in Yandex.Money
         /// </summary>
         [DataMember(Name = "invoice_id")]
         public String InvoiceId { get; set; }
@@ -73,7 +73,7 @@ namespace Yandex.Money.Api.Sdk.Responses
         public Dictionary<string, string> AcsParams { get; set; }
 
         /// <summary>
-        /// 	Recommended time interval to wait before repeating a request, in milliseconds
+        /// Recommended time interval to wait before repeating a request, in milliseconds
         /// </summary>
         [DataMember(Name = "next_retry")]
         public int NextRetry { get; set; }

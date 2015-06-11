@@ -92,7 +92,9 @@
     <Compile Include="Responses\OperationHistoryResult.cs" />
     <Compile Include="Responses\OperationDetailsResult.cs" />
     <Compile Include="Responses\OperationType.cs" />
+    <Compile Include="Responses\ProcessExternalPaymentResult.cs" />
     <Compile Include="Responses\ProcessPaymentResult.cs" />
+    <Compile Include="Responses\RequestExternalPaymentResult.cs" />
     <Compile Include="Responses\RequestPaymentResult.cs" />
     <Compile Include="Responses\ResponseStatus.cs" />
     <Compile Include="Responses\TokenResult.cs" />
