@@ -121,9 +121,15 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
         AmountDue = "Sum to pay", To = "User login", Message = "..."
     };
 
-    var requestExternalPaymentRequest = new RequestExternalPaymentRequest<RequestPaymentResult> (
-            defaultHttpPostClient, new JsonSerializer<RequestPaymentResult> ()) {
-        PaymentParams = p2P.GetParams(),
+    var reqParams = new PhoneTopupRequestPaymentParams
+    {
+        Amount = "Sum to pay",
+        PhoneNumber = "..."
+    };
+
+    var requestExternalPaymentRequest = new RequestExternalPaymentRequest<RequestExternalPaymentResult> (
+            defaultHttpPostClient, new JsonSerializer<RequestExternalPaymentResult> ()) {
+        PaymentParams = reqParams.GetParams(),
         InstanceId = InstanceId
     };
 
@@ -137,8 +143,8 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
 3. [Confirm payment](https://tech.yandex.com/money/doc/dg/reference/process-external-payment-docpage/)([ru](https://tech.yandex.ru/money/doc/dg/reference/process-external-payment-docpage/)):
 
     ```csharp
-     var processExternalPaymentRequest = new ProcessExternalPaymentRequest<ProcessPaymentResult> (
-            defaultHttpPostClient, new JsonSerializer<ProcessPaymentResult>()) {
+     var processExternalPaymentRequest = new ProcessExternalPaymentRequest<ProcessExternalPaymentResult> (
+            defaultHttpPostClient, new JsonSerializer<ProcessExternalPaymentResult>()) {
         RequestId = requestPaymentResult.RequestID,
         InstanceId = InstanceId,
         ExtAuthSuccessUri = "...",
@@ -153,7 +159,7 @@ To make [payments from bank cards](https://tech.yandex.com/money/doc/dg/referenc
 
      if(processPaymentResult.Status == ResponseStatus.ExtAuthRequired) {
 
-	WebBrowser.Navigate(processPaymentResult.AcsUri, processPaymentResult.AcsParams);
+        WebBrowser.Navigate(processPaymentResult.AcsUri, processPaymentResult.AcsParams);
      }
 
      ```

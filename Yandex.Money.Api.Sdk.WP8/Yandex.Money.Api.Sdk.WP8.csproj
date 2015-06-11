@@ -211,8 +211,14 @@
     <Compile Include="..\Yandex.Money.Api.Sdk\Responses\OperationType.cs">
       <Link>Responses\OperationType.cs</Link>
     </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\ProcessExternalPaymentResult.cs">
+      <Link>Responses\ProcessExternalPaymentResult.cs</Link>
+    </Compile>
     <Compile Include="..\Yandex.Money.Api.Sdk\Responses\ProcessPaymentResult.cs">
       <Link>Responses\ProcessPaymentResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Yandex.Money.Api.Sdk\Responses\RequestExternalPaymentResult.cs">
+      <Link>Responses\RequestExternalPaymentResult.cs</Link>
     </Compile>
     <Compile Include="..\Yandex.Money.Api.Sdk\Responses\RequestPaymentResult.cs">
       <Link>Responses\RequestPaymentResult.cs</Link>

@@ -102,7 +102,7 @@ namespace Yandex.Money.Api.Sdk.Responses
     }
 
     /// <summary>
-    ///  response of the request-payment method http://api.yandex.com/money/doc/dg/reference/request-payment.xml
+    /// response of the request-payment method http://api.yandex.com/money/doc/dg/reference/request-payment.xml
     /// </summary>
     [DataContract]
     public class RequestPaymentResult : ApiResultBase
