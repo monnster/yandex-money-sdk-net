@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Yandex.Money.Api.Sdk.Exceptions;
 using Yandex.Money.Api.Sdk.Interfaces;
@@ -51,6 +52,22 @@ namespace Yandex.Money.Api.Sdk.Requests.Base
                 throw new ArgumentNullException();
 
             var stream = await Client.UploadDataAsync(this);
+
+            using (stream)
+                return await Parse(stream);
+        }
+
+        /// <summary>
+        /// overload Perform method
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation</param>
+        /// <returns></returns>
+        public async Task<TResult> Perform(CancellationToken cancellationToken)
+        {
+            if (Client == null)
+                throw new ArgumentNullException();
+
+            var stream = await Client.UploadDataAsync(this, cancellationToken);
 
             using (stream)
                 return await Parse(stream);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using Yandex.Money.Api.Sdk.Exceptions;
 using Yandex.Money.Api.Sdk.Interfaces;
@@ -81,6 +82,22 @@ namespace Yandex.Money.Api.Sdk.Net
         /// <returns></returns>
         public async Task<Stream> UploadDataAsync(IRequest request)
         {
+            return await UploadDataAsync(request, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// performs the http request and returns the result 
+        /// </summary>
+        /// <param name="request">an instance of IRequest implementation</param>
+        /// <param name="token">a cancellation token that can be used by other objects or threads to receive notice of cancellation</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="InvalidRequestException"></exception>
+        /// <exception cref="InvalidTokenException"></exception>
+        /// <exception cref="InsufficientScopeException"></exception>
+        public async Task<Stream> UploadDataAsync(IRequest request, CancellationToken token)
+        {
             if (_httpClient == null || request == null)
                 throw new ArgumentNullException();
 
@@ -88,7 +105,7 @@ namespace Yandex.Money.Api.Sdk.Net
 
             request.AppendItemsTo(prms);
 
-            _httpClient.DefaultRequestHeaders.Authorization = 
+            _httpClient.DefaultRequestHeaders.Authorization =
                 (_authenticator != null && !String.IsNullOrEmpty(_authenticator.Token))
                 ? new AuthenticationHeaderValue(_authenticator.AuthenticationScheme, _authenticator.Token)
                 : null;
@@ -96,18 +113,18 @@ namespace Yandex.Money.Api.Sdk.Net
             HttpContent content = new FormUrlEncodedContent(prms.Select(x => new KeyValuePair<string, string>(x.Key, x.Value)));
             content.Headers.ContentType = new MediaTypeHeaderValue(DefaultContentType);
 
-            var response = await _httpClient.PostAsync(_hostProvider.BuildUri(request.RelativeUri), content);
-
+            var response = await _httpClient.PostAsync(_hostProvider.BuildUri(request.RelativeUri), content, token);
+  
             if (response == null)
                 throw new IOException();
 
             if (response.StatusCode == HttpStatusCode.OK)
                 return await response.Content.ReadAsStreamAsync();
 
-            if (response.Headers == null || response.Headers.WwwAuthenticate == null) 
+            if (response.Headers == null || response.Headers.WwwAuthenticate == null)
                 return null;
 
-            var responseError = String.Empty;
+            var responseError = string.Empty;
 
             var authenticationHeaderValue = response
                 .Headers
