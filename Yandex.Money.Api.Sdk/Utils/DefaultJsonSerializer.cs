@@ -1,5 +1,6 @@
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Yandex.Money.Api.Sdk.Interfaces;
 
 namespace Yandex.Money.Api.Sdk.Utils
@@ -58,7 +59,11 @@ namespace Yandex.Money.Api.Sdk.Utils
             return new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
-                NullValueHandling = NullValueHandling
+                NullValueHandling = NullValueHandling,
+				Converters = new JsonConverter[]
+				{
+					new StringEnumConverter()
+				}
             };
         }
 

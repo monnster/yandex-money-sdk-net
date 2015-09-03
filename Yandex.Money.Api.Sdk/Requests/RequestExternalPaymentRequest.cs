@@ -2,47 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using Yandex.Money.Api.Sdk.Interfaces;
+using Yandex.Money.Api.Sdk.Responses;
 
 namespace Yandex.Money.Api.Sdk.Requests
 {
     /// <summary>
-    /// Creates a payment
+    /// Creates a payment request which may be paid via bank card without authorization.
+	/// <see cref="https://tech.yandex.ru/money/doc/dg/reference/request-external-payment-docpage/"/>.
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    public class RequestExternalPaymentRequest<TResult> : RequestPaymentRequest<TResult>
+    public class RequestExternalPaymentRequest : RequestPaymentRequestBase<RequestExternalPaymentResult>
     {
-        public string InstanceId { get; set; }
+	    /// <summary>
+	    /// Initializes new instance of <see cref="RequestExternalPaymentRequest"/> class.
+	    /// </summary>
+	    /// <param name="patternId">Pattern id (same as showcase id)</param>
+	    /// <param name="instanceId">Application instance id. <see cref="InstanceIdRequest"/></param>
+	    /// <param name="paymentParams">Payment parameters.</param>
+	    public RequestExternalPaymentRequest(string patternId, string instanceId, Dictionary<string, string> paymentParams) 
+			: base(patternId, paymentParams)
+	    {
+			Argument.NotNullOrEmpty(instanceId, "Instance id is required.");
 
-        /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Requests.RequestExternalPaymentRequest class.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="jsonSerializer"></param>
-        public RequestExternalPaymentRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer)
-            : base(client, jsonSerializer)
-        {
-        }
+			_paymentParams["instance_id"] = instanceId;
+	    }
 
-        /// <summary>
-        /// IRequest interface implementation
-        /// </summary>
-        public override string RelativeUri
-        {
-            get { return @"api/request-external-payment"; }
-        }
+		/// <summary>
+		/// Initializes new instance of <see cref="RequestPaymentRequest"/> class.
+		/// </summary>
+		/// <param name="instanceId">Application instance id. <see cref="InstanceIdRequest"/></param>
+		/// <param name="paymentParams">Payment parameters. Should contain <code>pattern_id</code> param.</param>
+	    public RequestExternalPaymentRequest(string instanceId, IParams paymentParams) : base(paymentParams)
+	    {
+			Argument.NotNullOrEmpty(instanceId, "Instance id is required.");
 
-        public override void AppendItemsTo(Dictionary<string, string> uiParams)
-        {
-            if (uiParams == null)
-                return;
+			_paymentParams["instance_id"] = instanceId;
+	    }
 
-            foreach (var param in PaymentParams.Where(param => !uiParams.ContainsKey(param.Key)))
-                uiParams.Add(param.Key, param.Value);
+		#region Overrides
 
-            if (String.IsNullOrEmpty(InstanceId) || PaymentParams.ContainsKey("instance_id"))
-                return;
+		public override string RelativeUri
+		{
+			get { return @"api/request-external-payment"; }
+		}
 
-            uiParams.Add("instance_id", InstanceId);
-        }
+		#endregion
     }
 }

@@ -1,92 +1,108 @@
 ﻿using System;
 using System.Collections.Generic;
-using Yandex.Money.Api.Sdk.Interfaces;
+using System.Globalization;
 using Yandex.Money.Api.Sdk.Requests.Base;
+using Yandex.Money.Api.Sdk.Responses;
 using Yandex.Money.Api.Sdk.Utils;
+using KV = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace Yandex.Money.Api.Sdk.Requests
 {
+	[Flags]
+	public enum HistoryOperationTypes
+	{
+		Deposition = 1,
+		Payment = 2,
+		Incoming_transfers_unaccepted = 4,
+
+		/// <summary>
+		/// Do not filter by operation type.
+		/// </summary>
+		All = Deposition | Payment | Incoming_transfers_unaccepted
+	}
+
     /// <summary>
-    /// view the history of transactions
+    /// View transaction history.
     /// <see cref="http://tech.yandex.ru/money/doc/dg/reference/operation-history-docpage/"/>
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    public class OperationHistoryRequest<TResult> : JsonRequest<TResult>
+    public class OperationHistoryRequest : JsonRequest<OperationHistoryResult>
     {
-        /// <summary>
-        /// List of operation types to display 
-        /// </summary>
-        public string Type { get; set; }
+		private readonly HistoryOperationTypes _types;
+	    private readonly string _label;
+	    private readonly DateTime? _from;
+	    private readonly DateTime? _till;
+	    private readonly string _startRecord;
+	    private readonly int _records;
+	    private readonly bool _details;
 
-        /// <summary>
-        /// Filtering payments by the label value
-        /// </summary>
-        public string Label { get; set; }
+		/// <summary>
+		/// Initializes new instance of <see cref="OperationHistoryRequest"/> class.
+		/// </summary>
+		/// <param name="types">Filter by operation type.</param>
+		/// <param name="label">Filter by label.</param>
+		/// <param name="from">Get operations FROM this timestamp.</param>
+		/// <param name="till">Get operations TO this timestamp.</param>
+		/// <param name="startRecord">In case of multi-page history set startRecord to next_record value of prev response, otherwise leave empty.</param>
+		/// <param name="records">Number of records to retrieve per request. Default is 30.</param>
+		/// <param name="details">Whether to retrieve extended operation details or not. Requires permission <code>operation-details</code>. Default is false.</param>
+		public OperationHistoryRequest(HistoryOperationTypes types, string label, DateTime? @from, DateTime? till, string startRecord = null, int records = 30, bool details = false)
+	    {
+			Argument.Require(records > 0 && records <= 100, "Valid range for [records] argument is between 1 and 100");
 
-        /// <summary>
-        /// Output operations FROM a timestamp
-        /// </summary>
-        public DateTime? From { get; set; }
+		    _types = types;
+		    _label = label;
+		    _from = @from;
+		    _till = till;
+		    _startRecord = startRecord;
+		    _records = records;
+		    _details = details;
+	    }
 
-        /// <summary>
-        /// Output operations TO a timestamp
-        /// </summary>
-        public DateTime? Till { get; set; }
-
-        /// <summary>
-        /// If this parameter is present, displays all operations starting from the number start_record. Operations are numbered starting from 0 
-        /// </summary>
-        public string StartRecord { get; set; }
-
-        /// <summary>
-        /// Page size
-        /// </summary>
-        public int Records { get; set; }
-
-        /// <summary>
-        /// Show operation details
-        /// </summary>
-        public bool Details { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Requests.OperationHistoryRequest class.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="jsonSerializer"></param>
-        public OperationHistoryRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer)
-            : base(client, jsonSerializer)
-        {
-        }
-
-        public override string RelativeUri
+	    public override string RelativeUri
         {
             get { return @"api/operation-history"; }
         }
 
-        public override void AppendItemsTo(Dictionary<string, string> uiParams)
-        {
-            if (uiParams == null)
-                return;
+	    public override IEnumerable<KV> GetRequestParams()
+	    {
+		    if (_types != HistoryOperationTypes.All)
+		    {
+			    yield return new KV("type", BuildOperationTypeFilter(_types));
+		    }
 
-            if (!String.IsNullOrEmpty(Type))
-                uiParams.Add("type", Type);
+		    if(!string.IsNullOrEmpty(_label))
+				yield return new KV("label", _label);
 
-            if (!String.IsNullOrEmpty(Label))
-                uiParams.Add("label", Label);
+			if(_from.HasValue)
+				yield return new KV("from", _from.Value.ToServerTime(true));
 
-            if (From.HasValue)
-                uiParams.Add("from", From.Value.ToServerTime(true));
+			if(_till.HasValue)
+				yield return new KV("till", _till.Value.ToServerTime(true));
 
-            if (Till.HasValue)
-                uiParams.Add("till", Till.Value.ToServerTime(true));
+			if(!string.IsNullOrEmpty(_startRecord))
+				yield return new KV("start_record", _startRecord);
 
-            if (!String.IsNullOrEmpty(StartRecord))
-                uiParams.Add("start_record", StartRecord);
+		    yield return new KV("records", _records.ToString(CultureInfo.InvariantCulture));
 
-            uiParams.Add("records", ((Records < 1 || Records > 100) ? 30 : Records).ToString());
+			if(_details)
+				yield return new KV("details", "true");
+	    }
 
-            if (Details)
-                uiParams.Add("details", "true");
-        }
+	    private static string BuildOperationTypeFilter(HistoryOperationTypes operationTypes)
+	    {
+		    string filter = "";
+
+		    if (operationTypes.HasFlag(HistoryOperationTypes.Payment))
+			    filter += " payment";
+
+		    if (operationTypes.HasFlag(HistoryOperationTypes.Deposition))
+			    filter += " deposition";
+
+		    if (operationTypes.HasFlag(HistoryOperationTypes.Incoming_transfers_unaccepted))
+			    filter += " incoming-transfers-unaccepted";
+
+		    return filter.TrimStart();
+	    }
+	   
     }
 }

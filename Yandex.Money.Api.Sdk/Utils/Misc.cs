@@ -20,22 +20,32 @@ namespace Yandex.Money.Api.Sdk.Utils
             if (items == null || !items.Any())
                 return null;
 
-            var resultStringSeed = String.Empty;
-
-            var queryString =
-                items.Aggregate(resultStringSeed,
-                    (resultString, item) =>
-                        String.Format("{0}&{1}={2}",
-                            resultString,
-                            Uri.EscapeDataString(item.Key),
-                            Uri.EscapeDataString(item.Value))
-                    )
-                    .Trim(new[] { '&' });
-
-            var bytes = Encoding.UTF8.GetBytes(queryString);
+            var bytes = Encoding.UTF8.GetBytes(items.ToQueryString());
 
             return bytes.Any() ? bytes : null;
         }
+
+		/// <summary>
+		/// Convert dictionary of query params to query string, suitable for GET requests.
+		/// </summary>
+		/// <param name="queryParams"></param>
+		/// <returns></returns>
+	    public static string ToQueryString(this Dictionary<string, string> queryParams)
+	    {
+			if (queryParams == null || !queryParams.Any())
+				return null;
+
+			var resultStringSeed = String.Empty;
+
+			return queryParams.Aggregate(resultStringSeed,
+					(resultString, item) =>
+						String.Format("{0}&{1}={2}",
+							resultString,
+							Uri.EscapeDataString(item.Key),
+							Uri.EscapeDataString(item.Value))
+					)
+					.Trim(new[] { '&' });
+	    }
 
         /// <summary>
         /// convert the query string into the dictionary
@@ -53,5 +63,20 @@ namespace Yandex.Money.Api.Sdk.Utils
                     .Where(array => array.Length == 2)
                     .ToDictionary(array => array[0].Trim(), array => array[1].Trim());
         }
+
+	    public static bool IsLanguageSupported(string langCode)
+	    {
+			// in case no lang code is specified Yandex api will use default.
+		    if (string.IsNullOrEmpty(langCode))
+			    return true;
+
+		    var supportedLangs = new[]
+		    {
+			    "ru",
+			    "en"
+		    };
+
+		    return supportedLangs.Contains(langCode);
+	    }
     }
 }

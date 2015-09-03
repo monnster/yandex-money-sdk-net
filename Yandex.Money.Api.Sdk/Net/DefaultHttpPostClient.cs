@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Yandex.Money.Api.Sdk.Exceptions;
 using Yandex.Money.Api.Sdk.Interfaces;
+using Yandex.Money.Api.Sdk.Utils;
 
 namespace Yandex.Money.Api.Sdk.Net
 {
@@ -21,7 +22,7 @@ namespace Yandex.Money.Api.Sdk.Net
 
         private readonly IAuthenticator _authenticator;
 
-        private static readonly string[] Accepts = { @"application/xml", @"application/json" };
+        private static readonly string[] Accepts = { @"application/json", @"application/xml",  };
 
         private const string DefaultContentType = @"application/x-www-form-urlencoded";
 
@@ -29,14 +30,31 @@ namespace Yandex.Money.Api.Sdk.Net
 
         private HttpClientHandler _handler;
 
-        /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Interfaces.IHttpClient interface.
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DefaultHttpPostClient"/> class. Requests will be done without authentication.
+		/// </summary>
+	    public DefaultHttpPostClient()
+			: this(null, null)
+	    {
+	    }
+
+	    /// <summary>
+		/// Initializes a new instance of the <see cref="DefaultHttpPostClient"/> class.
+		/// </summary>
+		/// <param name="auth">Instance of IAuthenticator. If not specified request will not use authentication.</param>
+	    public DefaultHttpPostClient([CanBeNull] IAuthenticator auth) 
+			: this(null, auth)
+	    {
+	    }
+
+	    /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultHttpPostClient"/> class.
         /// </summary>
-        /// <param name="hostProvider">an instance of IHostProvider implementation</param>
-        /// <param name="auth">an instance of IAuthenticator implementation</param>
-        public DefaultHttpPostClient(IHostProvider hostProvider, IAuthenticator auth)
+        /// <param name="hostProvider">Instance of IHostProvider. If not specified, default one will be used.</param>
+        /// <param name="auth">Instance of IAuthenticator. If not specified request will not use authentication.</param>
+        public DefaultHttpPostClient([CanBeNull] IHostProvider hostProvider, [CanBeNull] IAuthenticator auth)
         {
-            _hostProvider = hostProvider;
+            _hostProvider = hostProvider ?? new DefaultHostsProvider();
             _authenticator = auth;
 
             Init();
@@ -80,9 +98,9 @@ namespace Yandex.Money.Api.Sdk.Net
         /// </summary>
         /// <param name="request">an instance of IRequest implementation</param>
         /// <returns></returns>
-        public async Task<Stream> UploadDataAsync(IRequest request)
+		public async Task<HttpServerResponse> GetResponseAsync(IRequest request)
         {
-            return await UploadDataAsync(request, CancellationToken.None);
+			return await GetResponseAsync(request, CancellationToken.None);
         }
 
         /// <summary>
@@ -96,35 +114,46 @@ namespace Yandex.Money.Api.Sdk.Net
         /// <exception cref="InvalidRequestException"></exception>
         /// <exception cref="InvalidTokenException"></exception>
         /// <exception cref="InsufficientScopeException"></exception>
-        public async Task<Stream> UploadDataAsync(IRequest request, CancellationToken token)
+		public async Task<HttpServerResponse> GetResponseAsync(IRequest request, CancellationToken token)
         {
-            if (_httpClient == null || request == null)
-                throw new ArgumentNullException();
+			if(null == _httpClient)
+				throw new InvalidOperationException("HttpClient is either disposed or was not created successfully.");
 
-            var prms = new Dictionary<string, string>();
+            if (null == request)
+                throw new ArgumentNullException("request", "Request is required.");
 
-            request.AppendItemsTo(prms);
+            var prms = request.RequestParams ?? new Dictionary<string, string>();
 
             _httpClient.DefaultRequestHeaders.Authorization =
-                (_authenticator != null && !String.IsNullOrEmpty(_authenticator.Token))
+                (_authenticator != null && !string.IsNullOrEmpty(_authenticator.Token))
                 ? new AuthenticationHeaderValue(_authenticator.AuthenticationScheme, _authenticator.Token)
                 : null;
 
-            HttpContent content = new FormUrlEncodedContent(prms.Select(x => new KeyValuePair<string, string>(x.Key, x.Value)));
+            HttpContent content = new FormUrlEncodedContent(prms);
             content.Headers.ContentType = new MediaTypeHeaderValue(DefaultContentType);
 
-            var response = await _httpClient.PostAsync(_hostProvider.BuildUri(request.RelativeUri), content, token);
+	        var response = request.RequestMethod == HttpMethod.Post
+		        ? await _httpClient.PostAsync(_hostProvider.BuildUri(request.RelativeUri), content, token)
+		        : await _httpClient.GetAsync(_hostProvider.BuildUri(request.RelativeUri) + "?" + prms.ToQueryString(), token);
   
             if (response == null)
-                throw new IOException();
+                throw new IOException("Unable to get response from server.");
 
-            if (response.StatusCode == HttpStatusCode.OK)
-                return await response.Content.ReadAsStreamAsync();
+			// according to yandex API 2xx and 3xx are successful codes.
+	        if ((int)response.StatusCode < 400)
+			{
+				return new HttpServerResponse
+		        {
+			        Status = response.StatusCode,
+			        Headers = response.Headers,
+			        Stream = await response.Content.ReadAsStreamAsync(),
+		        };
+			}
 
             if (response.Headers == null || response.Headers.WwwAuthenticate == null)
                 return null;
 
-            var responseError = string.Empty;
+            var responseError = "Error response received from server, status code " + response.StatusCode;
 
             var authenticationHeaderValue = response
                 .Headers

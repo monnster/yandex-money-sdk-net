@@ -1,42 +1,42 @@
 ﻿using System.Collections.Generic;
 using Yandex.Money.Api.Sdk.Interfaces;
 using Yandex.Money.Api.Sdk.Requests.Base;
+using Yandex.Money.Api.Sdk.Responses;
+using KV = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace Yandex.Money.Api.Sdk.Requests
 {
     /// <summary>
-    /// Cancel incoming transfers, protected by code, and transfer demand
+    /// Cancel incoming code-protected and on-demand transfers.
     /// <see cref="http://tech.yandex.ru/money/doc/dg/reference/incoming-transfer-reject-docpage/"/>
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    public class IncomingTransferRejectRequest<TResult> : JsonRequest<TResult>
+    public class IncomingTransferRejectRequest : JsonRequest<IncomingTransferResult>
     {
-        /// <summary>
-        ///  Operation ID
-        /// </summary>
-        public string OperationId { get; set; }
+	    private readonly string _operationId;
 
         /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Requests.IncomingTransferRejectRequest class.
+        /// Initializes a new instance of the <see cref="IncomingTransferRejectRequest"/> class.
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="jsonSerializer"></param>
-        public IncomingTransferRejectRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer)
-            : base(client, jsonSerializer)
+		/// <param name="operationId">Operation identifier.</param>
+        public IncomingTransferRejectRequest([NotNull]string operationId)
         {
+			Argument.NotNullOrEmpty(operationId, "Operation id is required.");
+
+	        _operationId = operationId;
         }
 
-        public override string RelativeUri
-        {
-            get { return @"api/incoming-transfer-reject"; }
-        }
+		#region Overrides
 
-        public override void AppendItemsTo(Dictionary<string, string> uiParams)
-        {
-            if (uiParams == null)
-                return;
+		public override string RelativeUri
+		{
+			get { return @"api/incoming-transfer-reject"; }
+		}
 
-            uiParams.Add("operation_id", OperationId);
-        }
+		public override IEnumerable<KeyValuePair<string, string>> GetRequestParams()
+		{
+			yield return new KV("operation_id", _operationId);
+		}
+		
+		#endregion
     }
 }

@@ -1,38 +1,39 @@
 ﻿using System.Collections.Generic;
 using Yandex.Money.Api.Sdk.Interfaces;
 using Yandex.Money.Api.Sdk.Requests.Base;
+using Yandex.Money.Api.Sdk.Responses;
+using KV = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace Yandex.Money.Api.Sdk.Requests
 {
     /// <summary>
-    /// Registration application instance
+    /// Register application instance.
     /// <see cref="http://tech.yandex.ru/money/doc/dg/reference/instance-id-docpage/"/>
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    public class InstanceIdRequest<TResult> : JsonRequest<TResult>
+    public class InstanceIdRequest : JsonRequest<InstanceIdResult>
     {
-        public string ClientId { get; set; }
+	    private readonly string _clientId;
 
-        /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Requests.InstanceIdRequest class.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="jsonSerializer"></param>
-        public InstanceIdRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer) : base(client, jsonSerializer)
-        {
-        }
+		/// <summary>
+		/// Initializes new instance of <see cref="InstanceIdRequest"/> class.
+		/// </summary>
+		/// <param name="clientId">Your client app identifier.</param>
+	    public InstanceIdRequest(string clientId)
+	    {
+			Argument.NotNullOrEmpty(clientId, "Client id is required.");
 
-        public override string RelativeUri
+		    _clientId = clientId;
+	    }
+
+	    public override string RelativeUri
         {
             get { return @"api/instance-id"; }
         }
 
-        public override void AppendItemsTo(Dictionary<string, string> uiParams)
-        {
-            if (uiParams == null)
-                return;
+	    public override IEnumerable<KeyValuePair<string, string>> GetRequestParams()
+	    {
+		    yield return new KV("client_id", _clientId);
+	    }
 
-            uiParams.Add("client_id", ClientId);
-        }
     }
 }

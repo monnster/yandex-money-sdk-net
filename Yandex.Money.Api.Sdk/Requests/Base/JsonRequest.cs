@@ -2,37 +2,42 @@
 using System.IO;
 using System.Threading.Tasks;
 using Yandex.Money.Api.Sdk.Interfaces;
+using Yandex.Money.Api.Sdk.Utils;
 
 namespace Yandex.Money.Api.Sdk.Requests.Base
 {
     /// <summary>
-    /// basic constructor for http requests that return results in json format
+    /// Abstract implementation of Request which uses json serializer.
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
-    public class JsonRequest<TResult> : Request<TResult>
+    public abstract class JsonRequest<TResult> : Request<TResult>
     {
-        private readonly IGenericSerializer<TResult> _jsonSerializer;
+        private readonly IGenericSerializer<TResult> _serializer;
 
-        /// <summary>
-        /// basic constructor for http requests that return results in json format
+		/// <summary>
+		/// Default ctor for JsonRequest.
+		/// </summary>
+	    protected JsonRequest()
+	    {
+			_serializer = new JsonSerializer<TResult>();
+	    }
+
+	    /// <summary>
+        /// Default ctor which allows to replace standard serializer.
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="jsonSerializer"></param>
-        public JsonRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer)
-            : base(client)
+	    protected JsonRequest(IGenericSerializer<TResult> jsonSerializer)
         {
-            _jsonSerializer = jsonSerializer;
+			Argument.NotNull(jsonSerializer,  "Serailizer instance is required.");
+
+			_serializer = jsonSerializer;
         }
 
-        public override Task<TResult> Parse(Stream stream)
+		public override Task<TResult> Parse(HttpServerResponse response)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                if (_jsonSerializer == null || stream == null)
-                    throw new ArgumentNullException();
+			Argument.NotNull(response, "Server response not present.");
 
-                return _jsonSerializer.Deserialize(stream);
-            });
+            return Task.Factory.StartNew(() => _serializer.Deserialize(response.Stream));
         }
     }
 }

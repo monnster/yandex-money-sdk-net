@@ -2,57 +2,51 @@ using System;
 using System.Collections.Generic;
 using Yandex.Money.Api.Sdk.Interfaces;
 using Yandex.Money.Api.Sdk.Requests.Base;
+using Yandex.Money.Api.Sdk.Responses;
+using KV = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace Yandex.Money.Api.Sdk.Requests
 {
     /// <summary>
-    /// Incoming transfers, protected by code, and transfer demand
+    /// Incoming transfers, protected by code, and transfer demand.
     /// <see cref="http://tech.yandex.ru/money/doc/dg/reference/incoming-transfer-accept-docpage/"/>
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    public class IncomingTransferAcceptRequest<TResult> : JsonRequest<TResult>
+    public class IncomingTransferAcceptRequest : JsonRequest<IncomingTransferResult>
     {
-        /// <summary>
-        /// Operation ID
-        /// </summary>
-        public string OperationId { get; set; }
+	    private readonly string _operationId;
+	    private readonly string _protectionCode;
 
         /// <summary>
-        /// Secret code
+        /// Initializes a new instance of <see cref="IncomingTransferAcceptRequest"/> class.
         /// </summary>
-        public string ProtectionCode { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Requests.IncomingTransferAcceptRequest class.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="jsonSerializer"></param>
-        public IncomingTransferAcceptRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer)
-            : base(client, jsonSerializer)
+        /// <param name="operationId">Operation identifier</param>
+        /// <param name="protectionCode">[optional] special code in case money transfer if protected by code.</param>
+        public IncomingTransferAcceptRequest([NotNull] string operationId, [CanBeNull]string protectionCode = null)
         {
+			Argument.NotNullOrEmpty(operationId, "Operation id is required.");
+
+	        _operationId = operationId;
+	        _protectionCode = protectionCode;
         }
 
-        /// <summary>
-        /// Represents an interface implementation
-        /// </summary>
-        public override string RelativeUri
-        {
-            get { return @"api/incoming-transfer-accept"; }
-        }
+		#region Overrides
 
-        /// <summary>
-        /// Represents an interface implementation
-        /// </summary>
-        /// <param name="uiParams"></param>
-        public override void AppendItemsTo(Dictionary<string, string> uiParams)
-        {
-            if (uiParams == null)
-                return;
+		/// <summary>
+		/// Represents an interface implementation
+		/// </summary>
+		public override string RelativeUri
+		{
+			get { return @"api/incoming-transfer-accept"; }
+		}
 
-            uiParams.Add("operation_id", OperationId);
+		public override IEnumerable<KeyValuePair<string, string>> GetRequestParams()
+		{
+			yield return new KV("operation_id", _operationId);
 
-            if (!String.IsNullOrEmpty(ProtectionCode))
-                uiParams.Add("protection_code", ProtectionCode);
-        }
+			if (!string.IsNullOrEmpty(_protectionCode))
+				yield return new KV("protection_code", _protectionCode);
+		}
+		
+		#endregion
     }
 }

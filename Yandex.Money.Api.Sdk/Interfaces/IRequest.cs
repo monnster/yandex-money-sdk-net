@@ -1,22 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Yandex.Money.Api.Sdk.Interfaces
 {
     /// <summary>
-    /// Represent interface to obtain parameters of the request
+    /// Describes API request.
     /// </summary>
     public interface IRequest
     {
-        /// <summary>
-        /// relative url of the request
-        /// </summary>
-        String RelativeUri { get; }
+		/// <summary>
+		/// Gets HTTP request method (GET|POST).
+		/// </summary>
+		HttpMethod RequestMethod { get; }
 
         /// <summary>
-        /// additional post parameters of the request
+        /// Relative url of the request.
         /// </summary>
-        /// <param name="items">request parameters</param>
-        void AppendItemsTo(Dictionary<string, string> items);
+        string RelativeUri { get; }
+
+		/// <summary>
+		/// Additional request parameters.
+		/// </summary>
+		Dictionary<string, string> RequestParams { get; } 
+
+	    /// <summary>
+	    /// Allows to append additional headers to request.
+	    /// </summary>
+	    /// <param name="headerCollection"></param>
+	    void AppendRequestHeaders(HttpContentHeaders headerCollection);
     }
 }

@@ -34,9 +34,9 @@
     <DocumentationFile>bin\Release\Yandex.Money.Api.Sdk.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations.cs" />
+    <Compile Include="Argument.cs" />
     <Compile Include="Authorization\AuthorizationRequestParams.cs" />
     <Compile Include="Authorization\Scopes.cs" />
     <Compile Include="Exceptions\InsufficientScopeException.cs" />
@@ -72,7 +74,6 @@
     <Compile Include="Requests\AccountInfoRequest.cs" />
     <Compile Include="Requests\Base\JsonRequest.cs" />
     <Compile Include="Requests\Base\Request.cs" />
-    <Compile Include="Requests\Base\SimpleRequest.cs" />
     <Compile Include="Requests\IncomingTransferAcceptRequest.cs" />
     <Compile Include="Requests\IncomingTransferRejectRequest.cs" />
     <Compile Include="Requests\InstanceIdRequest.cs" />
@@ -80,12 +81,34 @@
     <Compile Include="Requests\OperationHistoryRequest.cs" />
     <Compile Include="Requests\ProcessExternalPaymentRequest.cs" />
     <Compile Include="Requests\ProcessPaymentRequest.cs" />
+    <Compile Include="Requests\ProcessPaymentRequestBase.cs" />
     <Compile Include="Requests\RequestExternalPaymentRequest.cs" />
+    <Compile Include="Requests\KnownRequestParams.cs" />
     <Compile Include="Requests\RequestPaymentRequest.cs" />
+    <Compile Include="Requests\RequestPaymentRequestBase.cs" />
+    <Compile Include="Requests\ShowcaseFormParamsRequest.cs" />
+    <Compile Include="Requests\ShowcaseFormValidateRequest.cs" />
+    <Compile Include="Requests\ShowcaseSearchRequest.cs" />
     <Compile Include="Requests\TokenRequest.cs" />
     <Compile Include="Responses\AccountInfoResult.cs" />
     <Compile Include="Responses\Base\ApiResultBase.cs" />
     <Compile Include="Responses\DigitalGoods.cs" />
+    <Compile Include="Responses\Form\FeeDescription.cs" />
+    <Compile Include="Responses\Form\FormGroup.cs" />
+    <Compile Include="Responses\Form\FormParameter.cs" />
+    <Compile Include="Responses\Form\IAmountParameter.cs" />
+    <Compile Include="Responses\Form\ICheckboxParameter.cs" />
+    <Compile Include="Responses\Form\IDateParameter.cs" />
+    <Compile Include="Responses\Form\IEmailParameter.cs" />
+    <Compile Include="Responses\Form\IGroupParameter.cs" />
+    <Compile Include="Responses\Form\IMonthParameter.cs" />
+    <Compile Include="Responses\Form\INumberParameter.cs" />
+    <Compile Include="Responses\Form\ISelectParameter.cs" />
+    <Compile Include="Responses\Form\ISubmitParameter.cs" />
+    <Compile Include="Responses\Form\ITelParameter.cs" />
+    <Compile Include="Responses\Form\ITextAreaParameter.cs" />
+    <Compile Include="Responses\Form\ITextParameter.cs" />
+    <Compile Include="Responses\Form\FormParameterType.cs" />
     <Compile Include="Responses\IncomingTransferResult.cs" />
     <Compile Include="Responses\InstanceIdResult.cs" />
     <Compile Include="Responses\MoneyFlow.cs" />
@@ -97,6 +120,10 @@
     <Compile Include="Responses\RequestExternalPaymentResult.cs" />
     <Compile Include="Responses\RequestPaymentResult.cs" />
     <Compile Include="Responses\ResponseStatus.cs" />
+    <Compile Include="Responses\SelectFormParameter.cs" />
+    <Compile Include="Responses\ShowcaseFormParamsResponse.cs" />
+    <Compile Include="Responses\ShowcaseFormValidateResponse.cs" />
+    <Compile Include="Responses\ShowcaseSearchResponse.cs" />
     <Compile Include="Responses\TokenResult.cs" />
     <Compile Include="Utils\DateTimeEx.cs" />
     <Compile Include="Utils\DefaultJsonSerializer.cs" />

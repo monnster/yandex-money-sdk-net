@@ -1,75 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
-using Yandex.Money.Api.Sdk.Interfaces;
 using Yandex.Money.Api.Sdk.Requests.Base;
+using Yandex.Money.Api.Sdk.Responses;
+using KV = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace Yandex.Money.Api.Sdk.Requests
 {
     /// <summary>
-    /// exchange of temporary token on the authorization token
+    /// Exchange temporary token with permanent authorization token.
     /// <see cref="http://tech.yandex.ru/money/doc/dg/reference/obtain-access-token-docpage/"/>
     /// </summary>
-    /// <typeparam name="TResult"></typeparam>
-    public class TokenRequest<TResult> : JsonRequest<TResult>
+    public class TokenRequest : JsonRequest<TokenResult>
     {
-        /// <summary>
-        /// Temporary token
-        /// </summary>
-        public String Code { get; set; }
+	    private readonly string _code;
+	    private readonly string _clientId;
+	    private readonly string _redirectUri;
+	    private readonly string _clientSecret;
+	    private readonly string _grantType = "authorization_code";
 
-        /// <summary>
-        /// The client_id that was assigned to the application during registration
-        /// <see cref="http://tech.yandex.ru/money/doc/dg/tasks/register-client-docpage/"/>
-        /// </summary>
-        public String ClientId { get; set; }
+		/// <summary>
+		/// Initializes new instance of <see cref="TokenRequest"/> class.
+		/// </summary>
+		/// <param name="code">Temporary token.</param>
+		/// <param name="clientId">
+		/// Client id assigned to your application.
+		/// <see cref="http://tech.yandex.ru/money/doc/dg/tasks/register-client-docpage/"/>
+		/// </param>
+		/// <param name="redirectUri">Where to redirect user after successfull authorization.</param>
+		/// <param name="clientSecret">A secret word for verifying the application's authenticity.</param>
+	    public TokenRequest([NotNull]string code, [NotNull]string clientId, [CanBeNull]string redirectUri, [CanBeNull]string clientSecret)
+	    {
+			Argument.NotNullOrEmpty(code, "Temporary token is required.");
+			Argument.NotNullOrEmpty(clientId, "Client identifier is required.");
 
-        /// <summary>
-        /// Constant value: authorization_code
-        /// </summary>
-        public String GrantType
-        {
-            get { return " authorization_code"; }
-        }
+		    _code = code;
+		    _clientId = clientId;
+		    _redirectUri = redirectUri;
+		    _clientSecret = clientSecret;
+	    }
 
-        /// <summary>
-        /// URI that the OAuth server sends the authorization result to
-        /// </summary>
-        public String RedirectUri { get; set; }
-
-        /// <summary>
-        /// A secret word for verifying the application's authenticity
-        /// </summary>
-        public String ClientSecret { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the Yandex.Money.Api.Sdk.Requests.TokenRequest class.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="jsonSerializer"></param>
-        public TokenRequest(IHttpClient client, IGenericSerializer<TResult> jsonSerializer)
-            : base(client, jsonSerializer)
-        {
-        }
-
-        public override string RelativeUri
+	    public override string RelativeUri
         {
             get { return @"oauth/token"; }
         }
 
-        public override void AppendItemsTo(Dictionary<string, string> items)
-        {
-            if (items == null)
-                return;
+	    public override IEnumerable<KV> GetRequestParams()
+	    {
+		    yield return new KV("client_id", _clientId);
+			yield return new KV("code", _code);
+			yield return new KV("grant_type", _grantType);
 
-            items.Add("client_id", ClientId);
-            items.Add("code", Code);
-            items.Add("grant_type", GrantType);
+			if(!string.IsNullOrEmpty(_redirectUri))
+				yield return new KV("redirect_uri", Uri.EscapeDataString(_redirectUri));
 
-            if (!String.IsNullOrEmpty(RedirectUri))
-                items.Add("redirect_uri", Uri.EscapeDataString(RedirectUri));
-
-            if (!String.IsNullOrEmpty(ClientSecret))
-                items.Add("client_secret", Uri.EscapeDataString(ClientSecret));
-        }
+			if(!string.IsNullOrEmpty(_clientSecret))
+				yield return new KV("client_secret", Uri.EscapeDataString(_clientSecret));
+	    }
     }
 }
